@@ -51,7 +51,8 @@ async function writeInitiatives(initiatives) {
   await fs.writeFile(initiativesPath, JSON.stringify(initiatives, null, 2), 'utf-8');
 }
 
-app.get('/api/initiatives/list', async (req, res) => {
+// Removed /api prefix from routes
+app.get('/initiatives/list', async (req, res) => {
   try {
     const initiatives = await readInitiatives();
     res.status(200).json({
@@ -66,7 +67,8 @@ app.get('/api/initiatives/list', async (req, res) => {
   }
 });
 
-app.get('/api/initiatives/:slug', async (req, res) => {
+// Removed /api prefix from routes
+app.get('/initiatives/:slug', async (req, res) => {
   try {
     const initiatives = await readInitiatives();
     const initiative = initiatives.find((item) => item.slug === req.params.slug);
@@ -82,7 +84,8 @@ app.get('/api/initiatives/:slug', async (req, res) => {
   }
 });
 
-app.post('/api/initiatives', async (req, res) => {
+// Removed /api prefix from routes
+app.post('/initiatives', async (req, res) => {
   try {
     const initiatives = await readInitiatives();
 
@@ -104,7 +107,8 @@ app.post('/api/initiatives', async (req, res) => {
   }
 });
 
-app.put('/api/initiatives/:slug', async (req, res) => {
+// Removed /api prefix from routes
+app.put('/initiatives/:slug', async (req, res) => {
   try {
     const initiatives = await readInitiatives();
     const index = initiatives.findIndex((item) => item.slug === req.params.slug);
@@ -129,7 +133,8 @@ app.put('/api/initiatives/:slug', async (req, res) => {
   }
 });
 
-app.delete('/api/initiatives/:slug', async (req, res) => {
+// Removed /api prefix from routes
+app.delete('/initiatives/:slug', async (req, res) => {
   try {
     const initiatives = await readInitiatives();
     const filtered = initiatives.filter((item) => item.slug !== req.params.slug);

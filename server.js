@@ -1,93 +1,150 @@
-import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const initiativesPath = path.join(__dirname, '..', 'initiatives.json');
 
-app.get('/', (req, res) => {
-  res.status(200).send('API is running');
-});
+async function connectDB() {
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    console.log('MONGODB_URI not set, skipping database connection');
+    return;
+  }
+
+  try {
+    await mongoose.connect(uri);
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error.message);
+    console.log('Starting API without MongoDB...');
+  }
+}
+
+connectDB();
 
 app.get('/health', (req, res) => {
   res.json({ ok: true });
 });
 
-app.post('/api/subscribe', async (req, res) => {
-  const { default: handler } = await import('./api/subscribe.js');
-  handler(req, res);
-});
+async function readInitiatives() {
+  const raw = await fs.readFile(initiativesPath, 'utf-8');
+  return JSON.parse(raw);
+}
 
-app.get('/api/initiatives', async (req, res) => {
+async function writeInitiatives(initiatives) {
+  await fs.writeFile(initiativesPath, JSON.stringify(initiatives, null, 2), 'utf-8');
+}
+
+app.get('/api/initiatives/list', async (req, res) => {
   try {
-    const { default: handler } = await import('./api/initiatives/list.js');
-    handler(req, res);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const initiatives = await readInitiatives();
+    res.status(200).json({
+      initiatives,
+      total: initiatives.length,
+      page: 1,
+      limit: initiatives.length,
+    });
+  } catch (error) {
+    console.error('Error listing initiatives:', error);
+    res.status(500).json({ error: 'Failed to list initiatives' });
   }
 });
 
 app.get('/api/initiatives/:slug', async (req, res) => {
   try {
-    const { default: handler } = await import('./api/initiatives/get.js');
-    handler(req, res);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const initiatives = await readInitiatives();
+    const initiative = initiatives.find((item) => item.slug === req.params.slug);
+
+    if (!initiative) {
+      return res.status(404).json({ error: 'Initiative not found' });
+    }
+
+    return res.status(200).json(initiative);
+  } catch (error) {
+    console.error('Error fetching initiative:', error);
+    return res.status(500).json({ error: 'Failed to fetch initiative' });
   }
 });
 
 app.post('/api/initiatives', async (req, res) => {
   try {
-    const { default: handler } = await import('./api/initiatives/create.js');
-    handler(req, res);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const initiatives = await readInitiatives();
+
+    if (!req.body?.slug) {
+      return res.status(400).json({ error: 'slug is required' });
+    }
+
+    if (initiatives.some((item) => item.slug === req.body.slug)) {
+      return res.status(400).json({ error: 'Initiative slug already exists' });
+    }
+
+    initiatives.push(req.body);
+    await writeInitiatives(initiatives);
+
+    return res.status(201).json(req.body);
+  } catch (error) {
+    console.error('Error creating initiative:', error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
 app.put('/api/initiatives/:slug', async (req, res) => {
   try {
-    const { default: handler } = await import('./api/initiatives/update.js');
-    handler(req, res);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const initiatives = await readInitiatives();
+    const index = initiatives.findIndex((item) => item.slug === req.params.slug);
+
+    if (index === -1) {
+      return res.status(404).json({ error: 'Initiative not found' });
+    }
+
+    initiatives[index] = {
+      ...initiatives[index],
+      ...req.body,
+      slug: req.params.slug,
+      updatedAt: new Date().toISOString(),
+    };
+
+    await writeInitiatives(initiatives);
+
+    return res.status(200).json(initiatives[index]);
+  } catch (error) {
+    console.error('Error updating initiative:', error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
 app.delete('/api/initiatives/:slug', async (req, res) => {
   try {
-    const { default: handler } = await import('./api/initiatives/delete.js');
-    handler(req, res);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const initiatives = await readInitiatives();
+    const filtered = initiatives.filter((item) => item.slug !== req.params.slug);
+
+    if (filtered.length === initiatives.length) {
+      return res.status(404).json({ error: 'Initiative not found' });
+    }
+
+    await writeInitiatives(filtered);
+
+    return res.status(200).json({ message: 'Initiative deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting initiative:', error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
-const port = process.env.PORT || 3000;
-
-async function start() {
-  try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error('MONGODB_URI is missing');
-    }
-
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-  }
-
-  app.listen(port, () => {
-    console.log(`API running on port ${port}`);
-  });
-}
-
-start().catch(err => {
-  console.error('Startup error:', err);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`API running on port ${PORT}`);
 });

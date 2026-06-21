@@ -1,22 +1,24 @@
-// api/initiatives/list.js
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const DATA_FILE = path.join(process.cwd(), 'initiatives.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const initiativesPath = path.join(__dirname, '..', '..', '..', 'initiatives.json');
 
-export default async (req, res) => {
+export default async function handler(req, res) {
   try {
-    const data = fs.readFileSync(DATA_FILE, 'utf8');
-    const initiatives = JSON.parse(data);
-    
-    res.json({
-      initiatives: initiatives,
+    const raw = await fs.readFile(initiativesPath, 'utf-8');
+    const initiatives = JSON.parse(raw);
+
+    return res.status(200).json({
+      initiatives,
       total: initiatives.length,
       page: 1,
-      limit: initiatives.length
+      limit: initiatives.length,
     });
-  } catch (err) {
-    console.error('Error listing initiatives:', err.message);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error('Error listing initiatives:', error);
+    return res.status(500).json({ error: 'Failed to list initiatives' });
   }
-};
+}

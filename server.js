@@ -9,7 +9,10 @@ import { fileURLToPath } from 'url';
 dotenv.config();
 
 const app = express();
+
+// Simple CORS - allows ALL origins (localhost and production)
 app.use(cors());
+
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);

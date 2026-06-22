@@ -16,34 +16,58 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 
-// ===============================
-// CORS CONFIGURATION
-// ===============================
+// ================================
+// CORS
+// ================================
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://walckense.com",
-      "https://www.walckense.com"
-    ],
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE",
-      "OPTIONS"
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization"
-    ]
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://walckenseengineering.com",
+  "https://www.walckenseengineering.com"
+];
 
 
-// Express 5 preflight fix
-app.options("/{*splat}", cors());
+app.use((req, res, next) => {
+
+  const origin = req.headers.origin;
+
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      origin
+    );
+  }
+
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,DELETE,OPTIONS"
+  );
+
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
+
+  res.setHeader(
+    "Access-Control-Max-Age",
+    "86400"
+  );
+
+
+  if (req.method === "OPTIONS") {
+
+    return res.status(200).end();
+
+  }
+
+
+  next();
+
+});
 
 
 app.use(express.json());
@@ -51,17 +75,45 @@ app.use(express.json());
 
 
 
-// ===============================
-// READ INITIATIVES JSON
-// ===============================
 
-function readInitiatives() {
+// ================================
+// ROOT TEST
+// ================================
 
-  const filePath = path.join(
-    __dirname,
-    "initiatives.json"
-  );
+app.get("/", (req,res)=>{
 
+  res.json({
+    message:"Walckense backend is running"
+  });
+
+});
+
+
+
+
+
+// ================================
+// HEALTH
+// ================================
+
+app.get("/health",(req,res)=>{
+
+  res.json({
+    ok:true,
+    message:"Backend running"
+  });
+
+});
+
+
+
+
+
+// ================================
+// READ JSON FILE
+// ================================
+
+function readInitiatives(){
 
   delete require.cache[
     require.resolve("./initiatives.json")
@@ -76,65 +128,37 @@ function readInitiatives() {
 
 
 
-// ===============================
-// HEALTH CHECK
-// ===============================
-
-app.get("/health", (req, res) => {
-
-  res.status(200).json({
-    ok: true,
-    message: "Backend running"
-  });
-
-});
-
-
-
-
-
-// ===============================
+// ================================
 // GET ALL INITIATIVES
-// ===============================
+// ================================
 
-app.get("/initiatives/list", (req, res) => {
+app.get("/initiatives/list",(req,res)=>{
 
-  try {
+  try{
 
     const initiatives = readInitiatives();
 
 
-    res.status(200).json({
+    res.json({
 
       initiatives,
 
-      total: initiatives.length,
-
-      page: 1,
-
-      limit: initiatives.length
+      total: initiatives.length
 
     });
 
 
-  } catch (error) {
-
-    console.error(
-      "Error listing initiatives:",
-      error
-    );
-
+  }catch(error){
 
     res.status(500).json({
 
-      error: "Failed to list initiatives",
-
-      details: error.message
+      error:error.message
 
     });
 
   }
 
+
 });
 
 
@@ -142,28 +166,32 @@ app.get("/initiatives/list", (req, res) => {
 
 
 
-// ===============================
+// ================================
 // GET SINGLE INITIATIVE
-// ===============================
+// ================================
 
-app.get("/initiatives/:slug", (req, res) => {
+app.get("/initiatives/:slug",(req,res)=>{
 
-  try {
+
+  try{
+
 
     const initiatives = readInitiatives();
 
 
     const initiative = initiatives.find(
-      (item) => item.slug === req.params.slug
+
+      item => item.slug === req.params.slug
+
     );
 
 
 
-    if (!initiative) {
+    if(!initiative){
 
       return res.status(404).json({
 
-        error: "Initiative not found"
+        error:"Initiative not found"
 
       });
 
@@ -171,100 +199,16 @@ app.get("/initiatives/:slug", (req, res) => {
 
 
 
-    return res.status(200).json(initiative);
+    res.json(initiative);
 
 
 
-  } catch (error) {
+  }catch(error){
 
 
-    console.error(
-      "Error fetching initiative:",
-      error
-    );
+    res.status(500).json({
 
-
-    return res.status(500).json({
-
-      error: "Failed to fetch initiative",
-
-      details: error.message
-
-    });
-
-
-  }
-
-});
-
-
-
-
-
-
-// ===============================
-// CREATE INITIATIVE
-// ===============================
-
-app.post("/initiatives", (req, res) => {
-
-
-  try {
-
-
-    const initiatives = readInitiatives();
-
-
-
-    if (!req.body?.slug) {
-
-      return res.status(400).json({
-
-        error: "slug is required"
-
-      });
-
-    }
-
-
-
-
-    if (
-      initiatives.some(
-        (item) => item.slug === req.body.slug
-      )
-    ) {
-
-      return res.status(400).json({
-
-        error: "Initiative slug already exists"
-
-      });
-
-    }
-
-
-
-    initiatives.push(req.body);
-
-
-
-    return res.status(201).json(req.body);
-
-
-
-  } catch (error) {
-
-
-    console.error(
-      "Error creating initiative:",
-      error
-    );
-
-
-    return res.status(500).json({
-
-      error: error.message
+      error:error.message
 
     });
 
@@ -280,78 +224,35 @@ app.post("/initiatives", (req, res) => {
 
 
 
-// ===============================
-// UPDATE INITIATIVE
-// ===============================
+// ================================
+// CREATE
+// ================================
 
-app.put("/initiatives/:slug", (req, res) => {
-
-
-  try {
+app.post("/initiatives",(req,res)=>{
 
 
-    const initiatives = readInitiatives();
+try{
 
 
+const initiatives = readInitiatives();
 
-    const index = initiatives.findIndex(
 
-      (item) => item.slug === req.params.slug
+initiatives.push(req.body);
 
-    );
+
+res.status(201).json(req.body);
 
 
 
-    if (index === -1) {
+}catch(error){
 
-      return res.status(404).json({
+res.status(500).json({
 
-        error: "Initiative not found"
+error:error.message
 
-      });
+});
 
-    }
-
-
-
-    initiatives[index] = {
-
-      ...initiatives[index],
-
-      ...req.body,
-
-      slug: req.params.slug,
-
-      updatedAt: new Date().toISOString()
-
-    };
-
-
-
-    return res.status(200).json(
-      initiatives[index]
-    );
-
-
-
-  } catch (error) {
-
-
-    console.error(
-      "Error updating initiative:",
-      error
-    );
-
-
-
-    return res.status(500).json({
-
-      error: error.message
-
-    });
-
-
-  }
+}
 
 
 });
@@ -362,81 +263,6 @@ app.put("/initiatives/:slug", (req, res) => {
 
 
 
-
-// ===============================
-// DELETE INITIATIVE
-// ===============================
-
-app.delete("/initiatives/:slug", (req, res) => {
-
-
-  try {
-
-
-    const initiatives = readInitiatives();
-
-
-
-    const filtered = initiatives.filter(
-
-      (item) => item.slug !== req.params.slug
-
-    );
-
-
-
-
-    if (
-      filtered.length === initiatives.length
-    ) {
-
-      return res.status(404).json({
-
-        error: "Initiative not found"
-
-      });
-
-    }
-
-
-
-    return res.status(200).json({
-
-      message: "Initiative deleted successfully"
-
-    });
-
-
-
-  } catch (error) {
-
-
-    console.error(
-      "Error deleting initiative:",
-      error
-    );
-
-
-    return res.status(500).json({
-
-      error: error.message
-
-    });
-
-
-  }
-
-
-});
-
-
-
-
-
-
-// ===============================
-// EXPORT FOR VERCEL
-// ===============================
 
 export default app;
 
@@ -444,24 +270,21 @@ export default app;
 
 
 
+// LOCAL SERVER
 
-// ===============================
-// LOCAL DEVELOPMENT
-// ===============================
-
-if (process.env.NODE_ENV !== "production") {
+if(process.env.NODE_ENV !== "production"){
 
 
-  const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 
-  app.listen(PORT, () => {
+app.listen(PORT,()=>{
 
-    console.log(
-      `🚀 Server running on port ${PORT}`
-    );
+console.log(
+`Server running on ${PORT}`
+);
 
-  });
+});
 
 
 }

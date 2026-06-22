@@ -1,7 +1,7 @@
 [
   {
-    "slug": "week-1-environmental-infrastructure-observation",
-    "title": "Week 1 Environmental Infrastructure Observation Brief",
+    "slug": "bullet-1-environmental-infrastructure-observation",
+    "title": "bullet 1 Environmental Infrastructure Observation Brief",
     "summary": "Field observation of environmental and infrastructure conditions at Igbo-Etche Central Market and the Eneka–Igbo Etche Link Road corridor revealed severe drainage gaps, waste accumulation, and flood exposure during the rainy season.",
     "shortSummary": "Drainage deficit, solid waste accumulation, and unfinished road drainage are exposing the community to flood and erosion risk.",
     "category": "Environment & Infrastructure",
@@ -17,8 +17,18 @@
     "lga": "Etche Local Government Area",
     "community": "Igbo-Etche",
     "sitesVisited": [
-      { "name": "Igbo-Etche Central Market", "date": "14/06/2026", "type": "Local market square / community trading centre", "status": "Documented" },
-      { "name": "Eneka–Igbo Etche Link Road", "date": "14/06/2026", "type": "Access road under construction / transit corridor", "status": "Documented" }
+      {
+        "name": "Igbo-Etche Central Market",
+        "date": "14/06/2026",
+        "type": "Local market square / community trading centre",
+        "status": "Documented"
+      },
+      {
+        "name": "Eneka–Igbo Etche Link Road",
+        "date": "14/06/2026",
+        "type": "Access road under construction / transit corridor",
+        "status": "Documented"
+      }
     ],
     "gps": {
       "latitude": "4.9410373° N",
@@ -47,8 +57,14 @@
       "Streamside drainage paths are blocked by sediment and debris, threatening food production and water quality."
     ],
     "images": [
-      { "src": "/assets/images/initiatives/week1/igbo-etche-market-waste.webp", "caption": "Igbo-Etche Central Market: waste accumulated by the roadside; no collection point present." },
-      { "src": "/assets/images/initiatives/week1/igbo-etche-streamside-flood.webp", "caption": "Igbo-Etche Streamside / Roadside: flooded roadside and waterlogged access path to farmland." }
+      {
+        "src": "/assets/images/initiatives/bullet1/igbo-etche-market-waste.webp",
+        "caption": "Igbo-Etche Central Market: waste accumulated by the roadside; no collection point present."
+      },
+      {
+        "src": "/assets/images/initiatives/bullet1/igbo-etche-streamside-flood.webp",
+        "caption": "Igbo-Etche Streamside / Roadside: flooded roadside and waterlogged access path to farmland."
+      }
     ],
     "immediateActions": [
       "Clear accumulated solid waste from the market square and streamside area immediately.",
@@ -73,6 +89,99 @@
       { "name": "Waste Pressure", "value": 88 },
       { "name": "Flood Exposure", "value": 95 },
       { "name": "Road Risk", "value": 84 }
+    ]
+  },
+  {
+    "slug": "bullet-2-environmental-infrastructure-observation",
+    "title": "bullet 2 Environmental Infrastructure Observation Brief",
+    "summary": "Field observation along the East-West Road corridor (Rumuodara) and Oil Mill Market Junction revealed two distinct failure modes: a residential street completely submerged under floodwater with no drainage infrastructure, and a market junction drain physically present but functionally sealed under accumulated market waste.",
+    "shortSummary": "Absent drainage at Rumuodara and waste-blocked drainage at Oil Mill Market expose communities to flood risk and waterborne disease contamination.",
+    "category": "Environment & Infrastructure",
+    "priority": "High",
+    "status": "High Priority",
+    "location": "East-West Road (Rumuodara) & Oil Mill Market Junction, Port Harcourt, Rivers State, Nigeria",
+    "fieldDate": "2026-06-20",
+    "preparedBy": "Walckense Environmental Initiative",
+    "preparedFor": "Community Environmental Monitoring Programme",
+    "reportDate": "June 2026",
+    "country": "Nigeria",
+    "state": "Rivers State",
+    "lga": "Obio/Akpor / Port Harcourt City",
+    "community": "Rumuodara & Oil Mill Market",
+    "sitesVisited": [
+      {
+        "name": "East-West Road, Rumuodara",
+        "date": "20/06/2026",
+        "type": "Residential access road — fully submerged under floodwater",
+        "status": "Documented"
+      },
+      {
+        "name": "Oil Mill Market Junction",
+        "date": "20/06/2026",
+        "type": "Market junction — drainage channel buried under refuse",
+        "status": "Documented"
+      }
+    ],
+    "gps": {
+      "latitude": "4.8672617° N",
+      "longitude": "7.0384317° E",
+      "decimal": "4.8672617, 7.0384317",
+      "utm": "282,466.257 E / 538,307.679 N",
+      "utmZone": "32N",
+      "mgrs": "32NKL 84466 38308",
+      "epsg": "4326",
+      "altitudeGps": "40.0",
+      "altitudeMsl": "21.21",
+      "accuracy": "±2.65 m",
+      "azimuth": "N/A",
+      "dop": "N/A"
+    },
+    "geography": {
+      "geomorphology": "Niger Delta coastal plain — urban low-lying terrain",
+      "climate": "Tropical humid / equatorial — active rainy season June–October",
+      "vegetation": "Urban developed area with mixed residential and market zones",
+      "riskNote": "Flood-prone classification; waterborne disease risk from floodwater proximity to elevated water storage tanks."
+    },
+    "keyFindings": [
+      "East-West Road residential street (Rumuodara) has no kerb-side drain, open gutter, or constructed channel — full carriageway submerged under standing water after rainfall.",
+      "Floodwater reaches compound gate thresholds on both sides of the street, with proximity to elevated water storage tank raising contamination concerns.",
+      "Oil Mill Market Junction drain exists but is almost entirely buried under mixed market and household refuse — functionally sealed with no water flow.",
+      "Decomposing organic matter at Oil Mill Market produces dark leachate staining, putting residents and traders in daily contact with waste and health hazards.",
+      "Tricycle still moving through Rumuodara floodwater confirms this is routine, not a one-off event — community has adjusted routines around recurring submersion."
+    ],
+    "images": [
+      {
+        "src": "/assets/images/initiatives/bullet2/rumuodara-flooded-road.webp",
+        "caption": "East-West Road, Rumuodara: fully submerged residential access road, kerb to kerb, with no drainage channel anywhere in sight."
+      },
+      {
+        "src": "/assets/images/initiatives/bullet2/oil-mill-market-blocked-drain.webp",
+        "caption": "Oil Mill Market junction: drainage channel buried under uncollected market waste — not broken, not missing, just sealed until it cannot carry a drop of water."
+      }
+    ],
+    "immediateActions": [
+      "Report Oil Mill Market drainage blockage to Rivers State Waste Management Agency (RIWAMA) — cheapest, fastest intervention identified across both weeks.",
+      "Advise nearby households at OBS-004 (Rumuodara) to inspect elevated water tanks for contamination once floodwaters recede."
+    ],
+    "shortTermActions": [
+      "Flag missing kerb drainage on Rumuodara access street to Obio/Akpor LGA.",
+      "Unblock Oil Mill Market drainage channel — costs a fraction of what building a new one would."
+    ],
+    "mediumTermActions": [
+      "Commission a basic drainage capacity check for the Rumuodara residential corridor.",
+      "Talk to Oil Mill Market traders' association about a waste collection schedule that keeps the drain clear once reopened.",
+      "Add both sites to recurring SN-ESIRI watch list to monitor whether anything changes."
+    ],
+    "ongoingActions": [
+      "Walk further along East-West Road corridor in bullet 3 — Rumuodara flood suggests nearby streets likely flood similarly.",
+      "Pull all five GPS points (bullet 1 + bullet 2) into one shareable Google My Maps link before next AfWASA and UNICEF submissions.",
+      "Continue GPS-georeferenced monitoring for advocacy and partner reporting."
+    ],
+    "chartData": [
+      { "name": "Drainage Risk", "value": 94 },
+      { "name": "Waste Pressure", "value": 91 },
+      { "name": "Flood Exposure", "value": 97 },
+      { "name": "Contamination Risk", "value": 86 }
     ]
   }
 ]

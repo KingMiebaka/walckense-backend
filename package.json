@@ -1,10 +1,11 @@
 {
-  "name": "walckense-api",
+  "name": "walckense-backend",
+  "private": true,
   "version": "1.0.0",
   "type": "module",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

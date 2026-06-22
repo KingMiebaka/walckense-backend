@@ -1,0 +1,78 @@
+[
+  {
+    "slug": "week-1-environmental-infrastructure-observation",
+    "title": "Week 1 Environmental Infrastructure Observation Brief",
+    "summary": "Field observation of environmental and infrastructure conditions at Igbo-Etche Central Market and the Eneka–Igbo Etche Link Road corridor revealed severe drainage gaps, waste accumulation, and flood exposure during the rainy season.",
+    "shortSummary": "Drainage deficit, solid waste accumulation, and unfinished road drainage are exposing the community to flood and erosion risk.",
+    "category": "Environment & Infrastructure",
+    "priority": "High",
+    "status": "High Priority",
+    "location": "Igbo-Etche, Etche LGA, Rivers State, Nigeria",
+    "fieldDate": "2026-06-14",
+    "preparedBy": "Walckense Environmental Initiative",
+    "preparedFor": "Community Environmental Monitoring Programme",
+    "reportDate": "June 2026",
+    "country": "Nigeria",
+    "state": "Rivers State",
+    "lga": "Etche Local Government Area",
+    "community": "Igbo-Etche",
+    "sitesVisited": [
+      { "name": "Igbo-Etche Central Market", "date": "14/06/2026", "type": "Local market square / community trading centre", "status": "Documented" },
+      { "name": "Eneka–Igbo Etche Link Road", "date": "14/06/2026", "type": "Access road under construction / transit corridor", "status": "Documented" }
+    ],
+    "gps": {
+      "latitude": "4.9410373° N",
+      "longitude": "7.0862595° E",
+      "decimal": "4.9410373, 7.0862595",
+      "utm": "287,795.548 E / 546,451.982 N",
+      "utmZone": "32N",
+      "mgrs": "32NKL 87796 46452",
+      "epsg": "4326",
+      "altitudeGps": "27.3",
+      "altitudeMsl": "8.51",
+      "accuracy": "±1.86 m",
+      "azimuth": "214.11°",
+      "dop": "0.82 / 0.54 / 0.62"
+    },
+    "geography": {
+      "geomorphology": "Niger Delta coastal plain — low-lying alluvial terrain",
+      "climate": "Tropical humid / equatorial — active rainy season June–October",
+      "vegetation": "Freshwater swamp forest / farmed lowland",
+      "riskNote": "Flood-prone classification due to extremely low mean sea level altitude."
+    },
+    "keyFindings": [
+      "The market square and surrounding stall access paths have no formal drainage, causing pooled water after rainfall.",
+      "Solid waste is routinely disposed of on open ground or near the community stream, increasing siltation and public health risks.",
+      "The active road corridor remains without completed side drains in key stretches, increasing erosion and waterlogging exposure.",
+      "Streamside drainage paths are blocked by sediment and debris, threatening food production and water quality."
+    ],
+    "images": [
+      { "src": "/assets/images/initiatives/week1/igbo-etche-market-waste.webp", "caption": "Igbo-Etche Central Market: waste accumulated by the roadside; no collection point present." },
+      { "src": "/assets/images/initiatives/week1/igbo-etche-streamside-flood.webp", "caption": "Igbo-Etche Streamside / Roadside: flooded roadside and waterlogged access path to farmland." }
+    ],
+    "immediateActions": [
+      "Clear accumulated solid waste from the market square and streamside area immediately.",
+      "Enforce a halt on open waste burning within the market zone."
+    ],
+    "shortTermActions": [
+      "Complete side drains along the Eneka–Igbo Etche Link Road within the active rainy season window.",
+      "Establish a designated waste collection point for the central market."
+    ],
+    "mediumTermActions": [
+      "Design and install market drainage infrastructure to manage runoff.",
+      "Rehabilitate blocked streamside drainage paths.",
+      "Launch community sensitisation on waste, flooding, and water quality."
+    ],
+    "ongoingActions": [
+      "Repeat field assessments after rainfall to monitor changes.",
+      "Build a community environmental stewardship group.",
+      "Continue GPS-georeferenced monitoring for advocacy and partner reporting."
+    ],
+    "chartData": [
+      { "name": "Drainage Risk", "value": 92 },
+      { "name": "Waste Pressure", "value": 88 },
+      { "name": "Flood Exposure", "value": 95 },
+      { "name": "Road Risk", "value": 84 }
+    ]
+  }
+]

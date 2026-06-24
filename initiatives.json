@@ -1,7 +1,7 @@
 [
   {
-    "slug": "bullet-1-environmental-infrastructure-observation",
-    "title": "bullet 1 Environmental Infrastructure Observation Brief",
+    "slug": "bulletin-1-environmental-infrastructure-observation",
+    "title": "bulletin 1 Environmental Infrastructure Observation Brief",
     "summary": "Field observation of environmental and infrastructure conditions at Igbo-Etche Central Market and the Eneka–Igbo Etche Link Road corridor revealed severe drainage gaps, waste accumulation, and flood exposure during the rainy season.",
     "shortSummary": "Drainage deficit, solid waste accumulation, and unfinished road drainage are exposing the community to flood and erosion risk.",
     "category": "Environment & Infrastructure",
@@ -58,11 +58,11 @@
     ],
     "images": [
       {
-        "src": "/assets/images/initiatives/bullet1/igbo-etche-market-waste.webp",
+        "src": "/assets/images/initiatives/bulletin1/igbo-etche-market-waste.webp",
         "caption": "Igbo-Etche Central Market: waste accumulated by the roadside; no collection point present."
       },
       {
-        "src": "/assets/images/initiatives/bullet1/igbo-etche-streamside-flood.webp",
+        "src": "/assets/images/initiatives/bulletin1/igbo-etche-streamside-flood.webp",
         "caption": "Igbo-Etche Streamside / Roadside: flooded roadside and waterlogged access path to farmland."
       }
     ],
@@ -92,8 +92,8 @@
     ]
   },
   {
-    "slug": "bullet-2-environmental-infrastructure-observation",
-    "title": "bullet 2 Environmental Infrastructure Observation Brief",
+    "slug": "bulletin-2-environmental-infrastructure-observation",
+    "title": "bulletin 2 Environmental Infrastructure Observation Brief",
     "summary": "Field observation along the East-West Road corridor (Rumuodara) and Oil Mill Market Junction revealed two distinct failure modes: a residential street completely submerged under floodwater with no drainage infrastructure, and a market junction drain physically present but functionally sealed under accumulated market waste.",
     "shortSummary": "Absent drainage at Rumuodara and waste-blocked drainage at Oil Mill Market expose communities to flood risk and waterborne disease contamination.",
     "category": "Environment & Infrastructure",
@@ -151,11 +151,11 @@
     ],
     "images": [
       {
-        "src": "/assets/images/initiatives/bullet2/rumuodara-flooded-road.webp",
+        "src": "/assets/images/initiatives/bulletin2/rumuodara-flooded-road.webp",
         "caption": "East-West Road, Rumuodara: fully submerged residential access road, kerb to kerb, with no drainage channel anywhere in sight."
       },
       {
-        "src": "/assets/images/initiatives/bullet2/oil-mill-market-blocked-drain.webp",
+        "src": "/assets/images/initiatives/bulletin2/oil-mill-market-blocked-drain.webp",
         "caption": "Oil Mill Market junction: drainage channel buried under uncollected market waste — not broken, not missing, just sealed until it cannot carry a drop of water."
       }
     ],
@@ -173,8 +173,8 @@
       "Add both sites to recurring SN-ESIRI watch list to monitor whether anything changes."
     ],
     "ongoingActions": [
-      "Walk further along East-West Road corridor in bullet 3 — Rumuodara flood suggests nearby streets likely flood similarly.",
-      "Pull all five GPS points (bullet 1 + bullet 2) into one shareable Google My Maps link before next AfWASA and UNICEF submissions.",
+      "Walk further along East-West Road corridor in bulletin 3 — Rumuodara flood suggests nearby streets likely flood similarly.",
+      "Pull all five GPS points (bulletin 1 + bulletin 2) into one shareable Google My Maps link before next AfWASA and UNICEF submissions.",
       "Continue GPS-georeferenced monitoring for advocacy and partner reporting."
     ],
     "chartData": [

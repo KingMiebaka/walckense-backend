@@ -73,8 +73,13 @@ app.get("/health", (req, res) => {
 // ================================
 
 function readInitiatives() {
-  delete require.cache[require.resolve("./initiatives.json")];
-  return require("./initiatives.json");
+  try {
+    delete require.cache[require.resolve("./initiatives.json")];
+    return require("./initiatives.json");
+  } catch (error) {
+    console.error("Error reading initiatives.json:", error);
+    return [];
+  }
 }
 
 // ================================
@@ -89,6 +94,7 @@ app.get("/initiatives/list", (req, res) => {
       total: initiatives.length
     });
   } catch (error) {
+    console.error("Error in /initiatives/list:", error);
     res.status(500).json({
       error: error.message
     });
@@ -107,6 +113,7 @@ app.get("/initiatives/:slug", (req, res) => {
     );
 
     if (!initiative) {
+      console.log(`Initiative not found: ${req.params.slug}`);
       return res.status(404).json({
         error: "Initiative not found"
       });
@@ -114,6 +121,7 @@ app.get("/initiatives/:slug", (req, res) => {
 
     res.json(initiative);
   } catch (error) {
+    console.error("Error in /initiatives/:slug:", error);
     res.status(500).json({
       error: error.message
     });
@@ -121,31 +129,65 @@ app.get("/initiatives/:slug", (req, res) => {
 });
 
 // ================================
-// ✅ INCREMENT VIEW COUNT - NEW ENDPOINT
+// ✅ INCREMENT VIEW COUNT - FIXED ENDPOINT
 // ================================
 
 app.post("/initiatives/:slug/views", async (req, res) => {
   try {
     const slug = req.params.slug;
     
-    const data = await fs.readFile(DATA_FILE, "utf8");
-    const initiatives = JSON.parse(data);
+    console.log(`Incrementing view for: ${slug}`);
     
+    // Read initiatives file
+    let data;
+    try {
+      data = await fs.readFile(DATA_FILE, "utf8");
+    } catch (readError) {
+      console.error("Error reading file:", readError);
+      return res.status(500).json({
+        error: "Cannot read initiatives file"
+      });
+    }
+    
+    let initiatives;
+    try {
+      initiatives = JSON.parse(data);
+    } catch (parseError) {
+      console.error("Error parsing JSON:", parseError);
+      return res.status(500).json({
+        error: "Invalid JSON in initiatives file"
+      });
+    }
+    
+    // Find initiative
     const index = initiatives.findIndex(item => item.slug === slug);
     
     if (index === -1) {
+      console.log(`Initiative not found: ${slug}`);
       return res.status(404).json({
         error: "Initiative not found"
       });
     }
     
+    // Increment views
     initiatives[index].views = (initiatives[index].views || 0) + 1;
+    const newViews = initiatives[index].views;
     
-    await fs.writeFile(DATA_FILE, JSON.stringify(initiatives, null, 2));
+    // Write back to file
+    try {
+      await fs.writeFile(DATA_FILE, JSON.stringify(initiatives, null, 2));
+    } catch (writeError) {
+      console.error("Error writing file:", writeError);
+      return res.status(500).json({
+        error: "Cannot write to initiatives file"
+      });
+    }
+    
+    console.log(`View incremented successfully. New count: ${newViews}`);
     
     res.status(200).json({
       success: true,
-      views: initiatives[index].views,
+      views: newViews,
       slug: slug
     });
   } catch (error) {

@@ -102,18 +102,21 @@ app.get("/initiatives/list", (req, res) => {
 });
 
 // ================================
-// GET SINGLE INITIATIVE
+// GET SINGLE INITIATIVE - FIXED WITH URL DECODING
 // ================================
 
 app.get("/initiatives/:slug", (req, res) => {
   try {
+    // ✅ Decode the slug (handle spaces and special chars)
+    const decodedSlug = decodeURIComponent(req.params.slug);
+    
     const initiatives = readInitiatives();
     const initiative = initiatives.find(
-      item => item.slug === req.params.slug
+      item => item.slug === decodedSlug
     );
 
     if (!initiative) {
-      console.log(`Initiative not found: ${req.params.slug}`);
+      console.log(`Initiative not found: ${decodedSlug}`);
       return res.status(404).json({
         error: "Initiative not found"
       });
@@ -129,12 +132,13 @@ app.get("/initiatives/:slug", (req, res) => {
 });
 
 // ================================
-// ✅ INCREMENT VIEW COUNT - FIXED ENDPOINT
+// ✅ INCREMENT VIEW COUNT - FIXED WITH URL DECODING
 // ================================
 
 app.post("/initiatives/:slug/views", async (req, res) => {
   try {
-    const slug = req.params.slug;
+    // ✅ Decode the slug (handle spaces and special chars)
+    const slug = decodeURIComponent(req.params.slug);
     
     console.log(`Incrementing view for: ${slug}`);
     
@@ -159,11 +163,12 @@ app.post("/initiatives/:slug/views", async (req, res) => {
       });
     }
     
-    // Find initiative
+    // Find initiative (using decoded slug)
     const index = initiatives.findIndex(item => item.slug === slug);
     
     if (index === -1) {
       console.log(`Initiative not found: ${slug}`);
+      console.log("Available slugs:", initiatives.map(i => i.slug));
       return res.status(404).json({
         error: "Initiative not found"
       });
@@ -223,9 +228,12 @@ app.post("/initiatives", (req, res) => {
 
 app.put("/initiatives/:slug", async (req, res) => {
   try {
+    // Decode slug
+    const decodedSlug = decodeURIComponent(req.params.slug);
+    
     const data = await fs.readFile(DATA_FILE, "utf8");
     const initiatives = JSON.parse(data);
-    const index = initiatives.findIndex(item => item.slug === req.params.slug);
+    const index = initiatives.findIndex(item => item.slug === decodedSlug);
     
     if (index === -1) {
       return res.status(404).json({
@@ -252,9 +260,12 @@ app.put("/initiatives/:slug", async (req, res) => {
 
 app.delete("/initiatives/:slug", async (req, res) => {
   try {
+    // Decode slug
+    const decodedSlug = decodeURIComponent(req.params.slug);
+    
     const data = await fs.readFile(DATA_FILE, "utf8");
     const initiatives = JSON.parse(data);
-    const index = initiatives.findIndex(item => item.slug === req.params.slug);
+    const index = initiatives.findIndex(item => item.slug === decodedSlug);
     
     if (index === -1) {
       return res.status(404).json({

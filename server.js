@@ -102,12 +102,11 @@ app.get("/initiatives/list", (req, res) => {
 });
 
 // ================================
-// GET SINGLE INITIATIVE - FIXED WITH URL DECODING
+// GET SINGLE INITIATIVE - WITH URL DECODING
 // ================================
 
 app.get("/initiatives/:slug", (req, res) => {
   try {
-    // Decode the slug (handle spaces and special chars)
     const decodedSlug = decodeURIComponent(req.params.slug);
     
     const initiatives = readInitiatives();
@@ -132,14 +131,18 @@ app.get("/initiatives/:slug", (req, res) => {
 });
 
 // ================================
-// ✅ INCREMENT VIEW COUNT - FIXED WITH URL DECODING
+// ✅ INCREMENT VIEW - NOW USES QUERY PARAM (FIXES 500 ERROR)
 // ================================
 
-app.post("/initiatives/:slug/views", async (req, res) => {
+app.post("/initiatives/views", async (req, res) => {
   try {
-    // Decode the slug (handle spaces and special chars)
-    const slug = decodeURIComponent(req.params.slug);
+    // Get slug from QUERY PARAM instead of URL
+    const { slug } = req.query;
     
+    if (!slug) {
+      return res.status(400).json({ error: 'Slug is required' });
+    }
+
     console.log(`Incrementing view for: ${slug}`);
     
     // Read initiatives file
@@ -149,7 +152,7 @@ app.post("/initiatives/:slug/views", async (req, res) => {
     } catch (readError) {
       console.error("Error reading file:", readError);
       return res.status(500).json({
-        error: "Cannot read initiatives file"
+        error: "Cannot read initiatives file: " + readError.message
       });
     }
     
@@ -159,11 +162,11 @@ app.post("/initiatives/:slug/views", async (req, res) => {
     } catch (parseError) {
       console.error("Error parsing JSON:", parseError);
       return res.status(500).json({
-        error: "Invalid JSON in initiatives file"
+        error: "Invalid JSON in file: " + parseError.message
       });
     }
     
-    // Find initiative (using decoded slug)
+    // Find initiative
     const index = initiatives.findIndex(item => item.slug === slug);
     
     if (index === -1) {
@@ -184,7 +187,7 @@ app.post("/initiatives/:slug/views", async (req, res) => {
     } catch (writeError) {
       console.error("Error writing file:", writeError);
       return res.status(500).json({
-        error: "Cannot write to initiatives file"
+        error: "Cannot write to file: " + writeError.message
       });
     }
     
@@ -228,7 +231,6 @@ app.post("/initiatives", (req, res) => {
 
 app.put("/initiatives/:slug", async (req, res) => {
   try {
-    // Decode slug
     const decodedSlug = decodeURIComponent(req.params.slug);
     
     const data = await fs.readFile(DATA_FILE, "utf8");
@@ -260,7 +262,6 @@ app.put("/initiatives/:slug", async (req, res) => {
 
 app.delete("/initiatives/:slug", async (req, res) => {
   try {
-    // Decode slug
     const decodedSlug = decodeURIComponent(req.params.slug);
     
     const data = await fs.readFile(DATA_FILE, "utf8");

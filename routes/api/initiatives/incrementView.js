@@ -10,11 +10,12 @@ export default async (req, res) => {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // Get slug from URL PARAMETER (not body)
+    // Get slug from QUERY PARAM (not URL)
     const slug = req.query.slug;
 
     if (!slug) {
-      return res.status(400).json({ error: 'Slug is required' });
+      console.log('No slug provided in query');
+      return res.status(400).json({ error: 'Slug is required in query parameter' });
     }
 
     console.log(`Incrementing view for: ${slug}`);
@@ -23,26 +24,32 @@ export default async (req, res) => {
     let data;
     try {
       data = await fs.readFile(DATA_FILE, 'utf8');
+      console.log('File read successfully');
     } catch (readError) {
-      console.error('Error reading file:', readError);
-      return res.status(500).json({ error: 'Cannot read initiatives file' });
+      console.error('Error reading file:', readError.message);
+      return res.status(500).json({ error: 'Cannot read initiatives file: ' + readError.message });
     }
 
     let initiatives;
     try {
       initiatives = JSON.parse(data);
+      console.log(`JSON parsed, found ${initiatives.length} initiatives`);
     } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      return res.status(500).json({ error: 'Invalid JSON in initiatives file' });
+      console.error('Error parsing JSON:', parseError.message);
+      return res.status(500).json({ error: 'Invalid JSON in initiatives file: ' + parseError.message });
     }
 
-    // Find and increment view
+    // Find initiative
     const index = initiatives.findIndex(i => i.slug === slug);
 
     if (index === -1) {
       console.log(`Initiative not found: ${slug}`);
       console.log('Available slugs:', initiatives.map(i => i.slug));
-      return res.status(404).json({ error: 'Initiative not found' });
+      return res.status(404).json({ 
+        error: 'Initiative not found',
+        slug: slug,
+        available: initiatives.map(i => i.slug)
+      });
     }
 
     // Increment views
@@ -52,9 +59,10 @@ export default async (req, res) => {
     // Write back to file
     try {
       await fs.writeFile(DATA_FILE, JSON.stringify(initiatives, null, 2));
+      console.log('File written successfully');
     } catch (writeError) {
-      console.error('Error writing file:', writeError);
-      return res.status(500).json({ error: 'Cannot write to initiatives file' });
+      console.error('Error writing file:', writeError.message);
+      return res.status(500).json({ error: 'Cannot write to initiatives file: ' + writeError.message });
     }
 
     console.log(`View incremented successfully. New count: ${newViews}`);

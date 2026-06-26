@@ -107,7 +107,7 @@ app.get("/initiatives/list", (req, res) => {
 
 app.get("/initiatives/:slug", (req, res) => {
   try {
-    // ✅ Decode the slug (handle spaces and special chars)
+    // Decode the slug (handle spaces and special chars)
     const decodedSlug = decodeURIComponent(req.params.slug);
     
     const initiatives = readInitiatives();
@@ -137,7 +137,7 @@ app.get("/initiatives/:slug", (req, res) => {
 
 app.post("/initiatives/:slug/views", async (req, res) => {
   try {
-    // ✅ Decode the slug (handle spaces and special chars)
+    // Decode the slug (handle spaces and special chars)
     const slug = decodeURIComponent(req.params.slug);
     
     console.log(`Incrementing view for: ${slug}`);
